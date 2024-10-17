@@ -1,5 +1,7 @@
 from dsl import *
 from constants import *
+import numpy as np
+import json
 
 
 def solve_67a3c6ac(I):
@@ -3919,30 +3921,6 @@ def solve_e8dc4411(I):
     return O
 
 
-def solve_e40b9e2f(I):
-    x1 = objects(I, F, T, T)
-    x2 = neighbors(ORIGIN)
-    x3 = mapply(neighbors, x2)
-    x4 = first(x1)
-    x5 = lbind(intersection, x4)
-    x6 = compose(size, x5)
-    x7 = compose(hmirror, vmirror)
-    x8 = x7(x4)
-    x9 = lbind(shift, x8)
-    x10 = apply(x9, x3)
-    x11 = argmax(x10, x6)
-    x12 = paint(I, x11)
-    x13 = objects(x12, F, T, T)
-    x14 = first(x13)
-    x15 = compose(vmirror, dmirror)
-    x16 = x15(x14)
-    x17 = lbind(shift, x16)
-    x18 = apply(x17, x3)
-    x19 = argmax(x18, x6)
-    O = paint(x12, x19)
-    return O
-
-
 def solve_29623171(I):
     x1 = leastcolor(I)
     x2 = interval(ZERO, NINE, FOUR)
@@ -5098,40 +5076,6 @@ def solve_469497ad(I):
     return O
 
 
-def solve_39e1d7f9(I):
-    x1 = fgpartition(I)
-    x2 = objects(I, T, F, T)
-    x3 = order(x1, height)
-    x4 = last(x3)
-    x5 = remove(x4, x3)
-    x6 = last(x5)
-    x7 = color(x6)
-    x8 = colorfilter(x2, x7)
-    x9 = power(outbox, TWO)
-    x10 = rbind(toobject, I)
-    x11 = mostcolor(I)
-    x12 = lbind(remove, x11)
-    x13 = chain(size, x12, palette)
-    x14 = chain(x13, x10, x9)
-    x15 = argmax(x8, x14)
-    x16 = ulcorner(x15)
-    x17 = shape(x15)
-    x18 = subtract(x16, x17)
-    x19 = decrement(x18)
-    x20 = multiply(x17, THREE)
-    x21 = add(x20, TWO_BY_TWO)
-    x22 = crop(I, x19, x21)
-    x23 = asobject(x22)
-    x24 = apply(ulcorner, x8)
-    x25 = increment(x17)
-    x26 = rbind(subtract, x25)
-    x27 = apply(x26, x24)
-    x28 = lbind(shift, x23)
-    x29 = mapply(x28, x27)
-    O = paint(I, x29)
-    return O
-
-
 def solve_484b58aa(I):
     x1 = height(I)
     x2 = width(I)
@@ -5411,44 +5355,6 @@ def solve_28e73c20(I):
     return O
 
 
-def solve_4c5c2cf0(I):
-    x1 = objects(I, T, T, T)
-    x2 = objects(I, F, T, T)
-    x3 = first(x2)
-    x4 = rbind(subgrid, I)
-    x5 = fork(equality, identity, rot90)
-    x6 = compose(x5, x4)
-    x7 = extract(x1, x6)
-    x8 = center(x7)
-    x9 = subgrid(x3, I)
-    x10 = hmirror(x9)
-    x11 = objects(x10, F, T, T)
-    x12 = first(x11)
-    x13 = objects(x10, T, T, T)
-    x14 = rbind(subgrid, x10)
-    x15 = compose(x5, x14)
-    x16 = extract(x13, x15)
-    x17 = center(x16)
-    x18 = subtract(x8, x17)
-    x19 = shift(x12, x18)
-    x20 = paint(I, x19)
-    x21 = objects(x20, F, T, T)
-    x22 = first(x21)
-    x23 = subgrid(x22, x20)
-    x24 = vmirror(x23)
-    x25 = objects(x24, F, T, T)
-    x26 = first(x25)
-    x27 = objects(x24, T, T, T)
-    x28 = color(x7)
-    x29 = matcher(color, x28)
-    x30 = extract(x27, x29)
-    x31 = center(x30)
-    x32 = subtract(x8, x31)
-    x33 = shift(x26, x32)
-    O = paint(x20, x33)
-    return O
-
-
 def solve_508bd3b6(I):
     x1 = width(I)
     x2 = objects(I, T, T, T)
@@ -5593,43 +5499,6 @@ def solve_d07ae81c(I):
     return O
 
 
-def solve_6a1e5592(I):
-    x1 = width(I)
-    x2 = objects(I, T, F, T)
-    x3 = astuple(FIVE, x1)
-    x4 = crop(I, ORIGIN, x3)
-    x5 = colorfilter(x2, FIVE)
-    x6 = merge(x5)
-    x7 = cover(I, x6)
-    x8 = compose(toindices, normalize)
-    x9 = apply(x8, x5)
-    x10 = asindices(x4)
-    x11 = ofcolor(x4, ZERO)
-    x12 = ofcolor(x4, TWO)
-    x13 = rbind(multiply, TEN)
-    x14 = rbind(multiply, FIVE)
-    x15 = rbind(intersection, x12)
-    x16 = rbind(intersection, x11)
-    x17 = rbind(intersection, x10)
-    x18 = chain(x13, size, x15)
-    x19 = chain(size, x16, delta)
-    x20 = compose(x14, uppermost)
-    x21 = chain(size, x16, outbox)
-    x22 = chain(x13, size, x17)
-    x23 = compose(invert, x18)
-    x24 = fork(add, x22, x23)
-    x25 = fork(subtract, x24, x21)
-    x26 = fork(subtract, x25, x20)
-    x27 = fork(subtract, x26, x19)
-    x28 = rbind(apply, x10)
-    x29 = lbind(lbind, shift)
-    x30 = rbind(argmax, x27)
-    x31 = chain(x30, x28, x29)
-    x32 = mapply(x31, x9)
-    O = fill(x7, ONE, x32)
-    return O
-
-
 def solve_0e206a2e(I):
     x1 = palette(I)
     x2 = objects(I, F, F, T)
@@ -5705,55 +5574,6 @@ def solve_d22278a0(I):
     x33 = fork(recolor, color, x32)
     x34 = mapply(x33, x2)
     O = paint(I, x34)
-    return O
-
-
-def solve_4290ef0e(I):
-    x1 = mostcolor(I)
-    x2 = fgpartition(I)
-    x3 = objects(I, T, F, T)
-    x4 = rbind(valmax, width)
-    x5 = lbind(colorfilter, x3)
-    x6 = compose(x5, color)
-    x7 = compose(double, x4)
-    x8 = lbind(prapply, manhattan)
-    x9 = fork(x8, identity, identity)
-    x10 = lbind(remove, ZERO)
-    x11 = compose(x10, x9)
-    x12 = rbind(branch, NEG_TWO)
-    x13 = fork(x12, positive, decrement)
-    x14 = chain(x13, minimum, x11)
-    x15 = fork(add, x14, x7)
-    x16 = compose(x15, x6)
-    x17 = compose(invert, x16)
-    x18 = order(x2, x17)
-    x19 = rbind(argmin, centerofmass)
-    x20 = compose(initset, vmirror)
-    x21 = fork(insert, dmirror, x20)
-    x22 = fork(insert, cmirror, x21)
-    x23 = fork(insert, hmirror, x22)
-    x24 = compose(x19, x23)
-    x25 = apply(x24, x18)
-    x26 = size(x2)
-    x27 = apply(size, x2)
-    x28 = contained(ONE, x27)
-    x29 = increment(x26)
-    x30 = branch(x28, x26, x29)
-    x31 = double(x30)
-    x32 = decrement(x31)
-    x33 = apply(normalize, x25)
-    x34 = interval(ZERO, x30, ONE)
-    x35 = pair(x34, x34)
-    x36 = mpapply(shift, x33, x35)
-    x37 = astuple(x32, x32)
-    x38 = canvas(x1, x37)
-    x39 = paint(x38, x36)
-    x40 = rot90(x39)
-    x41 = paint(x40, x36)
-    x42 = rot90(x41)
-    x43 = paint(x42, x36)
-    x44 = rot90(x43)
-    O = paint(x44, x36)
     return O
 
 
