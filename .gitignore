@@ -1,2 +1,5 @@
 .venv
 __pycache__
+data2_full.json
+
+training_set_1_2.json
