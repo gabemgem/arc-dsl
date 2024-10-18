@@ -3,6 +3,7 @@ from arc_types import *
 from constants import *
 import solvers
 import solvers2
+# import solvers3
 from main import get_functions, get_data, list_to_tuple
 import re
 import inspect
@@ -271,4 +272,58 @@ def combine_2():
                 # print(e)
                 pass
 
-combine_3()
+
+def only_create_data(solver_filename, data_filename):
+    definitions = []
+    with open(solver_filename, 'r') as f:
+        definitions = f.read().split('\n\n')
+    if len(definitions) == 0:
+        print("didn't read any solvers")
+        return
+
+    data = get_data(train=True)
+    new_data = {}
+
+    n = len(definitions)
+    
+    for defn in tqdm(definitions, total=n):
+        solvername = defn.split('\n')[0].split('(')[0].replace('def ', '')
+        full_key = solvername.replace('solve_', '')
+        k1 = full_key.split('_')[0]
+
+        train_inputs = [ex['input'] for ex in data[k1]['train']]
+        train_outputs = generate_new_output(defn, train_inputs, solvername)
+        if train_outputs is None:
+            print('no new train outputs')
+            continue
+
+        test_inputs = [ex['input'] for ex in data[k1]['test']]
+        test_outputs = generate_new_output(defn, test_inputs, solvername)
+        if test_outputs is None:
+            print('no new test outputs')
+            continue 
+
+        new_data[full_key] = {
+            'train': [{'input': i, 'output': o} for i, o in zip(train_inputs, train_outputs)],
+            'test': [{'input': i, 'output': o} for i, o in zip(test_inputs, test_outputs)]
+        }
+    
+    print(len(new_data))
+    with open(data_filename, 'w') as f:
+        f.write(json.dumps(new_data))
+
+
+# combine_3()
+only_create_data('solvers3.py', 'data3.json')
+
+# with open('solvers3.py', 'r') as f:
+#     definitions = f.read().split('\n\n')
+#     defn = definitions[0]
+#     solvername = defn.split('\n')[0].split('(')[0].replace('def ', '')
+#     full_key = solvername.replace('solve_', '')
+#     k1 = full_key.split('_')[0]
+
+#     print(solvername, full_key, k1)
+
+
+    
