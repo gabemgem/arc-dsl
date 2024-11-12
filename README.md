@@ -17,3 +17,19 @@ By combining two or more solvers, we can generate exponentially more data than t
 ## DISTANCE.PY
 
 This file defines a helper function, `distance()` that calculates the distance between two grids as a function of pixel matching, overall color matching, grid size matching, and foreground object matching. It can be used, for example, in an RL method of creating ARC solutions.
+
+## AMMONOID Jupyter Notebooks
+
+These are the submission notebooks for the Kaggle ARC competition.
+
+## AMMONOID Finetuning
+
+This script is used for finetuning a Llama 3.1 8B model.
+
+## RUN_SCRIPT.SH
+
+This script iteratively calls the finetuning script with different input datasets. Calling the finetuning script iteratively with smaller input datasets makes the finetuning process much less memory intensive.
+
+## CREATE_FULL_MODEL.PY
+
+Creates a full model from the adapter model created by the finetuning script. A full model is needed because the Kaggle submission environment does not have access to the internet to download the rest of the model.
