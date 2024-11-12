@@ -38,6 +38,9 @@ def update_line(line, offset, replace_O=False, i_replacement=None, first_solver=
     return new_line
 
 def concat_solvers(s1, s2):
+    """
+    Combine two solvers in a consistent format to the original solvers
+    """
     try:
         lines1 = s1.split('\n')
         lines2 = s2.split('\n')
@@ -70,6 +73,10 @@ def concat_solvers(s1, s2):
         return None
 
 def generate_new_output(solver, inputs, solvername):
+    """
+    Generate new data from a synthetic solver and the input data from the
+    first original solver
+    """
     new_outputs = []
     try:
         exec(solver, globals())
@@ -83,6 +90,9 @@ def generate_new_output(solver, inputs, solvername):
     return new_outputs
 
 def concat_and_generate(data):
+    """
+    Concatenate two solvers and generate new data
+    """
     (key1, definition1, key2, definition2, train_input, test_input) = data
     k1 = key1.split('solve_')[1]
     k2 = key2.split('solve_')[1]
@@ -119,6 +129,10 @@ def concat_and_generate(data):
     return (new_def, final_key, new_data)
 
 def combine(definitions1, definitions2, solver_filename, data_filename):
+    """
+    Combine two sets of solvers and generate new data. Does the heavy lifting of
+    the `combine_2()` and `combine_3()` functions.
+    """
     get_key = lambda k: k.split('solve_')[1]
     get_first_key = lambda ks: ks.split('_')[0]
 
@@ -160,6 +174,9 @@ def combine(definitions1, definitions2, solver_filename, data_filename):
 
 
 def combine_3():
+    """
+    Combine the original solvers with the new synthetic solvers from `combine_2()`
+    """
     definitions = {
         function: inspect.getsource(getattr(solvers, function)) \
         for function in get_functions(solvers.__file__)
@@ -176,56 +193,10 @@ def combine_3():
     combine(definitions2, definitions, solver_filename, data_filename)
 
 
-
-    # with open('solvers3.py', 'w') as solve_file:
-    #     with open('data3.json', 'w') as data_file:
-    #         try:
-    #             data = get_data(train=True)
-    #             new_data = {}
-    #             for key1, definition1 in tqdm(definitions2.items()):
-    #                 for key2, definition2 in definitions.items():
-    #                     k1 = key1.split('solve_')[1]
-    #                     k2 = key2.split('solve_')[1]
-
-    #                     k1_list = k1.split('_')
-    #                     k1_1 = k1_list[0]
-    #                     k1_2 = k1_list[1]
-
-    #                     if k1_1 == k2 or k1_2 == k2:
-    #                         continue
-                        
-    #                     new_def, new_key = concat_solvers(definition1, definition2)
-
-    #                     if not new_def:
-    #                         # print('no new def')
-    #                         continue
-    #                     task_train_inputs = [ex['input'] for ex in data[k1_1]['train']]
-    #                     new_train_outputs = generate_new_output(new_def, task_train_inputs, new_key)
-    #                     if not new_train_outputs:
-    #                         # print('no new train outputs')
-    #                         continue
-    #                     task_test_inputs = [ex['input'] for ex in data[k1_1]['test']]
-    #                     new_test_outputs = generate_new_output(new_def, task_test_inputs, new_key)
-    #                     if not new_test_outputs:
-    #                         # print('no new test outputs')
-    #                         continue
-
-    #                     new_data[f'{k1_1}_{k1_2}_{k2}'] = {
-    #                         'train': [{'input': i, 'output': o} for i, o in zip(task_train_inputs, new_train_outputs)],
-    #                         'test': [{'input': i, 'output': o} for i, o in zip(task_test_inputs, new_test_outputs)]
-    #                     }
-
-    #                     solve_file.write(new_def)
-    #                     solve_file.write('\n')
-
-    #             print(len(new_data))
-    #             data_file.write(json.dumps(new_data))
-    #         except Exception as e:
-    #             # print(e)
-    #             pass
-
-
 def combine_2():
+    """
+    Combine all pairs of solvers and generate new data
+    """
     definitions = {
         function: inspect.getsource(getattr(solvers, function)) \
             for function in get_functions(solvers.__file__)
@@ -274,6 +245,9 @@ def combine_2():
 
 
 def only_create_data(solver_filename, data_filename):
+    """
+    Generate new data from an existing synthetic solver file
+    """
     definitions = []
     with open(solver_filename, 'r') as f:
         definitions = f.read().split('\n\n')

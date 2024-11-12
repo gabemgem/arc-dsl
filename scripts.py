@@ -8,6 +8,10 @@ from tqdm import tqdm
 from main import get_data, get_functions
 
 def create_training_set(solver_module, previous_training_set=None, input_data=None):
+    """
+    Combine synthetic solvers with synthetic data to create a dataset that matches
+    the format of the original dataset.
+    """
     data = {}
     if input_data is None:
         data = get_data(train=True)
@@ -58,4 +62,4 @@ def create_training_set(solver_module, previous_training_set=None, input_data=No
     with open('training_set.json', 'w') as f:
         json.dump(training_set, f)
 
-create_training_set('solvers2_full.py', 'training_set1.json', 'data2_full.json')
+create_training_set('../data/solvers3.py', 'training_set_1_2.json', 'data3_full.json')

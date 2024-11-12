@@ -1,5 +1,9 @@
 .venv
 __pycache__
 data2_full.json
+data2_full_old.json
+data3.json
 
 training_set_1_2.json
+
+.idea/
